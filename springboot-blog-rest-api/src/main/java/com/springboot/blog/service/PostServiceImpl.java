@@ -5,6 +5,7 @@ import com.springboot.blog.exception.ResourceNotFound;
 import com.springboot.blog.payload.PostDto;
 import com.springboot.blog.payload.PostDtoResponse;
 import com.springboot.blog.repository.PostRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +22,10 @@ public class PostServiceImpl implements PostService{
 
     private PostRepository postRepository;
 
-    public PostServiceImpl(PostRepository postRepository) {
+    private ModelMapper modelMapper;
+
+    public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
         this.postRepository = postRepository;
     }
 
@@ -58,22 +62,21 @@ public class PostServiceImpl implements PostService{
 
 
     private PostDto mapToDto(Post post){
-        PostDto respDto = new PostDto();
-        respDto.setPId(post.getId());
-        respDto.setPTitle(post.getTitle());
-        respDto.setPContent(post.getContent());
-        respDto.setPDescription(post.getDescription());
+        PostDto respDto = modelMapper.map(post,PostDto.class);
+//        respDto.setPId(post.getId());
+//        respDto.setPTitle(post.getTitle());
+//        respDto.setPContent(post.getContent());
+//        respDto.setPDescription(post.getDescription());
         return respDto;
     }
 
     private Post mapToEntity(PostDto postDto){
-        Post post = new Post();
+        Post post = modelMapper.map(postDto,Post.class);
         //post.setId(postDto.getPId());
-        post.setContent(postDto.getPContent());
-        post.setDescription(postDto.getPDescription());
-        post.setTitle(postDto.getPTitle());
-
-        return null;
+//        post.setContent(postDto.getPContent());
+//        post.setDescription(postDto.getPDescription());
+//        post.setTitle(postDto.getPTitle());
+        return post;
     }
 
     @Override
@@ -88,9 +91,9 @@ public class PostServiceImpl implements PostService{
     public PostDto updatePost(PostDto newDto, Long id) {
 
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFound("Post","Update",id));
-        post.setTitle(newDto.getPTitle());
-        post.setDescription(newDto.getPDescription());
-        post.setContent(newDto.getPContent());
+        post.setTitle(newDto.getTitle());
+        post.setDescription(newDto.getDescription());
+        post.setContent(newDto.getContent());
         postRepository.save(post);
         return mapToDto(post);
     }

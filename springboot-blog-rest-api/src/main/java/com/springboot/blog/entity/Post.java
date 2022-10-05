@@ -1,9 +1,7 @@
 package com.springboot.blog.entity;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,7 +11,8 @@ import java.util.Set;
 
 
 // Lombok annotaions to create getter setters and create Constructors -> Avoid boiler plate code
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor // bcz hibernate internally uses proxies
 //JPA Annotations

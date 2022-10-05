@@ -7,9 +7,9 @@ import java.io.Serializable;
 
 @Data
 public class CommentDto {
-    private long cId;
-    private String cName;
-    private String cEmail;
-    private String cBody;
+    private long id;
+    private String name;
+    private String email;
+    private String body;
     //private Post post;
 }

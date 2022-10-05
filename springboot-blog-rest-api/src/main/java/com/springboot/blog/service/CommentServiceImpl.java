@@ -7,6 +7,7 @@ import com.springboot.blog.exception.ResourceNotFound;
 import com.springboot.blog.payload.CommentDto;
 import com.springboot.blog.repository.CommentRepository;
 import com.springboot.blog.repository.PostRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +21,15 @@ public class CommentServiceImpl implements CommentService{
     private CommentRepository commentRepository;
     private PostRepository postRepository;
 
+    private ModelMapper modelMapper;
+
     public CommentServiceImpl(CommentRepository commentRepository,
-                                PostRepository postRepository
+                                PostRepository postRepository,
+                                    ModelMapper modelMapper
     ) {
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -76,9 +81,9 @@ public class CommentServiceImpl implements CommentService{
             throw new BlogApiException(HttpStatus.BAD_REQUEST,"Comment does not belong to the post");
         }
 
-        comment.setBody(requestCommDto.getCBody());
-        comment.setName(requestCommDto.getCName());
-        comment.setEmail(requestCommDto.getCEmail());
+        comment.setBody(requestCommDto.getBody());
+        comment.setName(requestCommDto.getName());
+        comment.setEmail(requestCommDto.getEmail());
 
         Comment commentResp = commentRepository.save(comment);
 
@@ -103,20 +108,20 @@ public class CommentServiceImpl implements CommentService{
 
 
     private Comment toCommentEntity(CommentDto commentDto){
-        Comment comment = new Comment();
-        comment.setId(commentDto.getCId());
-        comment.setBody(commentDto.getCBody());
-        comment.setName(commentDto.getCName());
-        comment.setEmail(commentDto.getCEmail());
+        Comment comment = modelMapper.map(commentDto,Comment.class);
+//        comment.setId(commentDto.getCId());
+//        comment.setBody(commentDto.getCBody());
+//        comment.setName(commentDto.getCName());
+//        comment.setEmail(commentDto.getCEmail());
         return comment;
     }
 
     private CommentDto toCommentDto(Comment  comment){
-        CommentDto commentDto = new CommentDto();
-        commentDto.setCId(comment.getId());
-        commentDto.setCName(comment.getName());
-        commentDto.setCEmail(comment.getEmail());
-        commentDto.setCBody(comment.getBody());
+        CommentDto commentDto = modelMapper.map(comment,CommentDto.class);
+//        commentDto.setCId(comment.getId());
+//        commentDto.setCName(comment.getName());
+//        commentDto.setCEmail(comment.getEmail());
+//        commentDto.setCBody(comment.getBody());
         return commentDto;
     }
 }

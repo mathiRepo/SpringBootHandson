@@ -52,12 +52,7 @@ public class CommentController {
             @PathVariable(value = "commentId") long commentId,
             @RequestBody CommentDto commentDto
     ){
-        try {
-            commentService.updateCommentById(postId, commentId, commentDto);
-        }catch (BlogApiException blogApiException){
-            System.out.println("Error due to Bad request : "+blogApiException.getMessage());
-            return new ResponseEntity<>(commentDto,HttpStatus.BAD_REQUEST);
-        }
+        commentService.updateCommentById(postId, commentId, commentDto);
         return new ResponseEntity<>(commentDto,HttpStatus.CREATED);
     }
 
