@@ -47,6 +47,10 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public List<CommentDto> getCommentsById(long postId) {
         List<Comment> comments = commentRepository.getCommentByPostId(postId);
+        if (comments.isEmpty()) {
+            throw new ResourceNotFound("Comments","Id", postId);
+        }
+
         List<CommentDto> commentDtos = comments.stream()
                 .map(comment->toCommentDto(comment)).collect(Collectors.toList());
         return commentDtos;

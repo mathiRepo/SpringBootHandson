@@ -13,7 +13,7 @@ public class ResourceNotFound extends RuntimeException{
     private Long fieldValue;
 
     public ResourceNotFound( String resourceName, String fieldName, Long fieldValue) {
-        super(String.format(resourceName+" : "+fieldName+" "+fieldValue));
+        super(String.format(resourceName+" with : "+fieldName+" is not found for "+fieldValue));
         this.resourceName = resourceName;
         this.fieldName = fieldName;
         this.fieldValue = fieldValue;
