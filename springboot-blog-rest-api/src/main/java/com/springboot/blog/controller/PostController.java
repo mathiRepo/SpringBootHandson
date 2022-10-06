@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -24,7 +25,7 @@ public class PostController {
 
 
     @PostMapping
-    public ResponseEntity<PostDto> savePost(@RequestBody PostDto  postDto){
+    public ResponseEntity<PostDto> savePost(@Valid  @RequestBody PostDto  postDto){
         System.out.println("Inside Controller");
         PostDto responseDto = PostService.createPost(postDto);
         System.out.println("outside service ");
@@ -47,7 +48,7 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PostDto> updatePost(@PathVariable(value = "id") Long id,@RequestBody PostDto postDto){
+    public ResponseEntity<PostDto> updatePost(@Valid @PathVariable(value = "id") Long id,@RequestBody PostDto postDto){
         return new ResponseEntity<>(PostService.updatePost(postDto,id),HttpStatus.ACCEPTED);
     }
 
